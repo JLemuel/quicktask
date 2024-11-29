@@ -69,4 +69,15 @@ class TaskController extends Controller
 
         return redirect()->back()->with('success', 'Task status updated successfully');
     }
+
+    public function show(Task $task)
+    {
+        if ($task->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        return Inertia::render('Tasks/Show', [
+            'task' => new TaskResource($task)
+        ]);
+    }
 }
